@@ -1,0 +1,40 @@
+exports.listFiles= async (req,res) => {
+  const {google} = require('googleapis');
+  var fileId
+  var permission = [
+    {
+      'type': 'user',
+      'role': 'writer',
+      'emailAddress': "nehalpbafna@gmail.com"
+    },
+  ];
+
+  var claimId = "Test"
+  const drive_service = google.drive({version:'v3'});
+  var fileMetadata = {
+    'name': claimId,
+    'mimeType': 'application/vnd.google-apps.folder',
+    'parents' : ['1u2GW3EqpPy-G1yZd74AlcSJgIrR6Mrml']
+    };
+  drive_service.files.create({
+    resource: fileMetadata,
+    supportsAllDrives:true,
+    fields: 'id'},
+    (err, file) => {
+      console.log("after getting trying to create");
+      console.log(file.id);
+      console.log(err);
+        if (err) {
+          res.send(err);
+        } else {
+         // res.send(file.id)
+          fileId = file.id;
+          console.log("here2");
+          console.log(file);
+         // (permission, permissionCallback) => {
+         // }
+         console.log("here"+file.id);
+         res.send(file.id);
+        }
+      });
+  }
